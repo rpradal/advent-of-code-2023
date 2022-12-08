@@ -2,7 +2,6 @@ package day4
 
 import java.io.File
 
-
 fun solveDay4Part1Puzzle(file: File): Int {
     return extractToOrderedIntervals(file)
         .count(::isContained)
@@ -34,5 +33,4 @@ fun isContained(orderedPairs: Pair<Pair<Int, Int>, Pair<Int, Int>>): Boolean {
 
 fun isOverlapping(orderedPairs: Pair<Pair<Int, Int>, Pair<Int, Int>>): Boolean {
     return orderedPairs.first.second >= orderedPairs.second.first
-
 }

@@ -18,4 +18,3 @@ private fun extractElvesCarrying(file: File): List<Int> {
         .map { it.split(",").map(String::toInt) }
         .map { it.sum() }
 }
-

@@ -2,7 +2,6 @@ package day3
 
 import java.io.File
 
-
 fun solveDay3Part1Puzzle(file: File): Int {
     return file.readLines().map {
         it.subSequence(0, it.length / 2).toList() to it.subSequence(it.length / 2, it.length).toList()
@@ -11,7 +10,6 @@ fun solveDay3Part1Puzzle(file: File): Int {
     }.flatten()
         .sumOf(::computeCharValue)
 }
-
 
 fun solveDay3Part2Puzzle(file: File): Int {
     return file.readLines()

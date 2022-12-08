@@ -5,7 +5,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.io.File
 
-
 internal class Day6KtTest {
 
     @ParameterizedTest
@@ -16,7 +15,7 @@ internal class Day6KtTest {
         "sample4, 11",
     )
     fun solveDay6Part1Puzzle(sampleFileName: String, expectedResult: String) {
-        val testFile = File("src/test/kotlin/day6/${sampleFileName}")
+        val testFile = File("src/test/kotlin/day6/$sampleFileName")
 
         val result = solveDay6Part1Puzzle(testFile)
 
@@ -31,7 +30,7 @@ internal class Day6KtTest {
         "sample4, 26",
     )
     fun solveDay6Part2Puzzle(sampleFileName: String, expectedResult: String) {
-        val testFile = File("src/test/kotlin/day6/${sampleFileName}")
+        val testFile = File("src/test/kotlin/day6/$sampleFileName")
 
         val result = solveDay6Part2Puzzle(testFile)
 

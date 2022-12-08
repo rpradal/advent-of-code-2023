@@ -2,7 +2,6 @@ package day2
 
 import java.io.File
 
-
 enum class Choice(val score: Int) {
     ROCK(1), PAPER(2), SCISSOR(3)
 }
@@ -10,7 +9,6 @@ enum class Choice(val score: Int) {
 enum class MatchIssue(val score: Int) {
     WIN(6), DRAW(3), LOSE(0)
 }
-
 
 val MATCH_ISSUE_TO_DELTA = mapOf(
     MatchIssue.WIN to 1,
@@ -47,7 +45,6 @@ fun findMatchIssue(user: Choice, opponent: Choice): MatchIssue {
 fun findChoiceForMatchIssue(opponent: Choice, matchIssue: MatchIssue): Choice {
     return WINNING_ORDER[(WINNING_ORDER.indexOf(opponent) + MATCH_ISSUE_TO_DELTA.getOrThrow(matchIssue)) % 3]
 }
-
 
 val WINNING_ORDER: List<Choice> = listOf(Choice.ROCK, Choice.PAPER, Choice.SCISSOR)
 
