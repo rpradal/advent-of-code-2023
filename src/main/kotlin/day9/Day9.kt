@@ -19,37 +19,52 @@ fun fromStringRepresentation(representation: String) = when (representation) {
     else -> throw IllegalArgumentException()
 }
 
-data class Crawling(
+data class CrawlingState(
     val headPosition: Pair<Int, Int>,
-    val tailPosition: Pair<Int, Int>,
+    val tailPositions: List<Pair<Int, Int>>,
     val tailPositionHistory: List<Pair<Int, Int>>
 )
 
-fun computeNewTailPosition(headPosition: Pair<Int, Int>, tailPosition: Pair<Int, Int>): Pair<Int, Int> {
-    if (abs(headPosition.first - tailPosition.first) <= 1 && abs(headPosition.second - tailPosition.second) <= 1) {
-        return tailPosition
+fun computeNewFollowerPosition(leaderPosition: Pair<Int, Int>, followerPosition: Pair<Int, Int>): Pair<Int, Int> {
+    if (abs(leaderPosition.first - followerPosition.first) <= 1 && abs(leaderPosition.second - followerPosition.second) <= 1) {
+        return followerPosition
     }
 
     return when {
-        headPosition.first == tailPosition.first -> tailPosition.first to (headPosition.second - tailPosition.second).sign + tailPosition.second
-        headPosition.second == tailPosition.second -> (headPosition.first - tailPosition.first).sign + tailPosition.first to tailPosition.second
-        else -> (headPosition.first - tailPosition.first).sign + tailPosition.first to (headPosition.second - tailPosition.second).sign + tailPosition.second
+        leaderPosition.first == followerPosition.first -> followerPosition.first to (leaderPosition.second - followerPosition.second).sign + followerPosition.second
+        leaderPosition.second == followerPosition.second -> (leaderPosition.first - followerPosition.first).sign + followerPosition.first to followerPosition.second
+        else -> (leaderPosition.first - followerPosition.first).sign + followerPosition.first to (leaderPosition.second - followerPosition.second).sign + followerPosition.second
     }
 }
 
-fun computeNewCrawling(crawling: Crawling, move: Move): Crawling {
-    val newHeadPosition = crawling.headPosition.first + move.rowMove to crawling.headPosition.second + move.columnMove
-    val newTailPosition = computeNewTailPosition(newHeadPosition, crawling.tailPosition)
-    return Crawling(newHeadPosition, newTailPosition, crawling.tailPositionHistory + newTailPosition)
+data class Tail(
+    val previous: Pair<Int, Int>,
+    val startOfTailPositions: List<Pair<Int, Int>>
+)
+
+fun computeNewCrawling(crawlingState: CrawlingState, move: Move): CrawlingState {
+    val newHeadPosition =
+        crawlingState.headPosition.first + move.rowMove to crawlingState.headPosition.second + move.columnMove
+    val newTailPositions = crawlingState.tailPositions.fold(Tail(newHeadPosition, listOf())) { acc, current ->
+        val position = computeNewFollowerPosition(acc.previous, current)
+        return@fold Tail(position, acc.startOfTailPositions + position)
+    }.startOfTailPositions
+    return CrawlingState(newHeadPosition, newTailPositions, crawlingState.tailPositionHistory + newTailPositions.last())
 }
 
 fun solveDay9Part1Puzzle(file: File): Int {
-    return file.readLines()
-        .map { it.split(" ") }
-        .map { fromStringRepresentation(it[0]) to it[1].toInt() }
-        .flatMap { pair -> List(pair.second) { pair.first } }
-        .fold(Crawling(0 to 0, 0 to 0, listOf(0 to 0)), ::computeNewCrawling)
-        .tailPositionHistory
-        .toSet()
-        .size
+    return computedVisitedPositions(file, 1)
 }
+
+fun solveDay9Part2Puzzle(file: File): Int {
+    return computedVisitedPositions(file, 9)
+}
+
+private fun computedVisitedPositions(file: File, tailSize: Int) = file.readLines()
+    .map { it.split(" ") }
+    .map { fromStringRepresentation(it[0]) to it[1].toInt() }
+    .flatMap { pair -> List(pair.second) { pair.first } }
+    .fold(CrawlingState(0 to 0, List(tailSize) { 0 to 0 }, listOf(0 to 0)), ::computeNewCrawling)
+    .tailPositionHistory
+    .toSet()
+    .size

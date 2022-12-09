@@ -14,4 +14,13 @@ internal class Day9KtTest {
 
         assertEquals(13, result)
     }
+
+    @Test
+    fun solveDay9Part2Puzzle() {
+        val testFile = File("src/test/kotlin/day9/sample")
+
+        val result = solveDay9Part2Puzzle(testFile)
+
+        assertEquals(1, result)
+    }
 }
