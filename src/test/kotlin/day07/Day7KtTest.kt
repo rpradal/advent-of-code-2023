@@ -8,7 +8,7 @@ internal class Day7KtTest {
 
     @Test
     fun solveDay7Part1Puzzle() {
-        val testFile = File("src/test/kotlin/day7/sample")
+        val testFile = File("src/test/kotlin/day07/sample")
 
         val result = solveDay7Part1Puzzle(testFile)
 
@@ -17,7 +17,7 @@ internal class Day7KtTest {
 
     @Test
     fun solveDay7Part2Puzzle() {
-        val testFile = File("src/test/kotlin/day7/sample")
+        val testFile = File("src/test/kotlin/day07/sample")
 
         val result = solveDay7Part2Puzzle(testFile)
 

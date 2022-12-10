@@ -16,6 +16,8 @@ import day08.solveDay8Part1Puzzle
 import day08.solveDay8Part2Puzzle
 import day09.solveDay9Part1Puzzle
 import day09.solveDay9Part2Puzzle
+import day10.solveDay10Part1Puzzle
+import day10.solveDay10Part2Puzzle
 import java.io.File
 
 fun main() {
@@ -52,6 +54,11 @@ fun main() {
     println("Part2: ${solveDay8Part2Puzzle(File("src/main/kotlin/day08/input"))}")
 
     println("Day09")
-    println("Part1: ${solveDay9Part1Puzzle(File("src/main/kotlin/day09/input"))}") // 6498
-    println("Part2: ${solveDay9Part2Puzzle(File("src/main/kotlin/day09/input"))}") // 6498
+    println("Part1: ${solveDay9Part1Puzzle(File("src/main/kotlin/day09/input"))}")
+    println("Part2: ${solveDay9Part2Puzzle(File("src/main/kotlin/day09/input"))}")
+
+    println("Day10")
+    println("Part1: ${solveDay10Part1Puzzle(File("src/main/kotlin/day10/input"))}")
+    println("Part1:")
+    println(solveDay10Part2Puzzle(File("src/main/kotlin/day10/input")))
 }
