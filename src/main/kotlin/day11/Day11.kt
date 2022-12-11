@@ -73,7 +73,12 @@ data class Monkey(
     }
 }
 
-private fun monkeyBusinessLevel(file: File, levelDivision: Long, roundCount: Int): Long {
+enum class WorryingSimplificationStrategy {
+    DIVIDE_BY_3,
+    MODULO_PRIME_FACTORS
+}
+
+private fun monkeyBusinessLevel(file: File, strategy: WorryingSimplificationStrategy, roundCount: Int): Long {
     val monkeys = file
         .readLines()
         .joinToString("\n")
@@ -81,14 +86,10 @@ private fun monkeyBusinessLevel(file: File, levelDivision: Long, roundCount: Int
         .map { Monkey.fromString(it.split("\n")) }
 
     repeat(roundCount) {
-        println(it)
-        if (it == 20) {
-            println("foo")
-        }
         monkeys.forEach { monkey ->
             monkey.items.forEach {
                 monkey.inspectionCount += 1
-                val newWorryValue = monkey.operation.apply(it) / levelDivision.toBigInteger()
+                val newWorryValue = getNewWorryValue(monkey, it, monkeys, strategy)
                 if (newWorryValue % monkey.test.divider.toBigInteger() == BigInteger.ZERO) {
                     monkeys[monkey.test.truthyRecipient].items.addLast(newWorryValue)
                 } else {
@@ -106,10 +107,25 @@ private fun monkeyBusinessLevel(file: File, levelDivision: Long, roundCount: Int
         .reduce(Long::times)
 }
 
+private fun getNewWorryValue(
+    monkey: Monkey,
+    it: BigInteger,
+    monkeys: List<Monkey>,
+    strategy: WorryingSimplificationStrategy
+): BigInteger {
+
+    val newValueBeforeSimplification = monkey.operation.apply(it)
+    return when (strategy) {
+        WorryingSimplificationStrategy.DIVIDE_BY_3 -> newValueBeforeSimplification / 3.toBigInteger()
+        WorryingSimplificationStrategy.MODULO_PRIME_FACTORS -> newValueBeforeSimplification % monkeys.map { it.test.divider }
+            .reduce(Int::times).toBigInteger()
+    }
+}
+
 fun solveDay11Part1Puzzle(file: File): Long {
-    return monkeyBusinessLevel(file,3, 20)
+    return monkeyBusinessLevel(file, WorryingSimplificationStrategy.DIVIDE_BY_3, 20)
 }
 
 fun solveDay11Part2Puzzle(file: File): Long {
-    return monkeyBusinessLevel(file,1, 10000)
+    return monkeyBusinessLevel(file, WorryingSimplificationStrategy.MODULO_PRIME_FACTORS, 10000)
 }

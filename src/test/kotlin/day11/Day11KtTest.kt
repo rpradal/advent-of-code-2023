@@ -1,8 +1,7 @@
 package day11
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import java.io.File
 
 internal class Day11KtTest {
