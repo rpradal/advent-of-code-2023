@@ -22,8 +22,7 @@ private const val CRT_SIZE = 40
 fun solveDay10Part1Puzzle(file: File): Int {
     return cycleToRegistryValue(file)
         .filter { it.first in (20..220 step CRT_SIZE).toList() }
-        .map { it.first * it.second }
-        .sum()
+        .sumOf { it.first * it.second }
 }
 
 private fun cycleToRegistryValue(file: File) = file
