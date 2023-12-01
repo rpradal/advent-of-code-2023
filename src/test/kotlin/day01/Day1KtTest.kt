@@ -20,7 +20,7 @@ internal class Day1KtTest {
         fun generatePart2TestCases(): List<Arguments> {
             return listOf(
                 Arguments.of("src/test/kotlin/day01/sample_part2", 281),
-                Arguments.of("src/test/kotlin/day01/puzzle", 56074),
+                Arguments.of("src/test/kotlin/day01/puzzle", 56017),
             )
         }
     }

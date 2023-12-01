@@ -6,8 +6,7 @@ fun solveDay1Part1Puzzle(file: File): Int {
     return file
         .readLines()
         .map { "${it.first(Char::isDigit)}${it.last(Char::isDigit)}" }
-        .map(String::toInt)
-        .sum()
+        .sumOf(String::toInt)
 }
 
 val mapping = (1..9).associateBy(Int::toString) + mapOf(
@@ -25,18 +24,18 @@ val mapping = (1..9).associateBy(Int::toString) + mapOf(
 fun solveDay1Part2Puzzle(file: File): Int {
     return file
         .readLines()
-        .map { findPairs(it) to findLastPairs(it) }
-        .map { "${it.first}${it.second}" }
-        .map(String::toInt)
-        .sum()
+        .map { "${findPairs(it)}${findLastPairs(it)}" }
+        .sumOf(String::toInt)
 }
 
-private fun findPairs(it: String): Int {
-    return mapping.map { (stringRep, value) -> it.indexOf(stringRep) to value }.filter { it.first >= 0 }
-        .sortedBy { it.first }.first().second
+private fun findPairs(line: String): Int {
+    return mapping.mapKeys { (stringRep, _) -> line.indexOf(stringRep) }
+        .filter { it.key >= 0 }
+        .minByOrNull { it.key }!!.value
 }
 
-private fun findLastPairs(it: String): Int {
-    return mapping.map { (stringRep, value) -> it.lastIndexOf(stringRep) to value }.filter { it.first >= 0 }
-        .sortedBy { it.first }.last().second
+private fun findLastPairs(line: String): Int {
+    return mapping.mapKeys { (stringRep, _) -> line.lastIndexOf(stringRep) }
+        .filter { it.key >= 0 }
+        .maxByOrNull { it.key }!!.value
 }
