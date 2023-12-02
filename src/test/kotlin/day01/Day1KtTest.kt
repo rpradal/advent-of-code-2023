@@ -24,6 +24,7 @@ internal class Day1KtTest {
             )
         }
     }
+
     @ParameterizedTest
     @MethodSource("generatePart1TestCases")
     fun solveDay1Part1Puzzle(

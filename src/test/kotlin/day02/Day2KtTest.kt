@@ -19,8 +19,8 @@ internal class Day2KtTest {
         @JvmStatic
         fun generatePart2TestCases(): List<Arguments> {
             return listOf(
-                Arguments.of("src/test/kotlin/day02/sample_part2", 281),
-                Arguments.of("src/test/kotlin/day02/puzzle", 56017),
+                Arguments.of("src/test/kotlin/day02/sample", 2286),
+                Arguments.of("src/test/kotlin/day02/puzzle", 83105),
             )
         }
     }
@@ -34,6 +34,19 @@ internal class Day2KtTest {
         val testFile = File(path)
 
         val result = solveDay2Part1Puzzle(testFile)
+
+        assertEquals(expectedResult, result)
+    }
+
+    @ParameterizedTest
+    @MethodSource("generatePart2TestCases")
+    fun solveDay1Part2Puzzle(
+        path: String,
+        expectedResult: Int,
+    ) {
+        val testFile = File(path)
+
+        val result = solveDay2Part2Puzzle(testFile)
 
         assertEquals(expectedResult, result)
     }

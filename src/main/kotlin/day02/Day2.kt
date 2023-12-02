@@ -14,6 +14,15 @@ data class Set(
 
 fun Set.isPossible() = draw.all { it.value <= it.key.max }
 
+fun maxOfSets(
+    a: Set,
+    b: Set,
+): Set {
+    return Set(
+        draw = a.draw.map { (color: Color, count: Int) -> color to maxOf(count, b.draw[color]!!) }.toMap(),
+    )
+}
+
 fun String.toSet(): Set {
     return Set(
         draw =
@@ -41,10 +50,19 @@ fun String.toGame(): Game {
     )
 }
 
-fun solveDay2Part1Puzzle(file: File): Int {
-    return file
+private fun parseGames(file: File) =
+    file
         .readLines()
         .map(String::toGame)
+
+fun solveDay2Part1Puzzle(file: File): Int {
+    return parseGames(file)
         .filter(Game::isPossible)
         .sumOf(Game::id)
+}
+
+fun solveDay2Part2Puzzle(file: File): Int {
+    return parseGames(file)
+        .map { it.sets.reduce(::maxOfSets) }
+        .sumOf { it.draw.values.reduce(Int::times) }
 }
