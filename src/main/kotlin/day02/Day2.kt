@@ -55,13 +55,13 @@ private fun parseGames(file: File) =
         .readLines()
         .map(String::toGame)
 
-fun solveDay2Part1Puzzle(file: File): Int {
+fun solvePart1(file: File): Int {
     return parseGames(file)
         .filter(Game::isPossible)
         .sumOf(Game::id)
 }
 
-fun solveDay2Part2Puzzle(file: File): Int {
+fun solvePart2(file: File): Int {
     return parseGames(file)
         .map { it.sets.reduce(::maxOfSets) }
         .sumOf { it.draw.values.reduce(Int::times) }

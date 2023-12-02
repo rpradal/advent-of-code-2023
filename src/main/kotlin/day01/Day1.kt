@@ -2,7 +2,7 @@ package day01
 
 import java.io.File
 
-fun solveDay1Part1Puzzle(file: File): Int {
+fun solvePart1(file: File): Int {
     return file
         .readLines()
         .map { "${it.first(Char::isDigit)}${it.last(Char::isDigit)}" }
@@ -23,7 +23,7 @@ val mapping =
             "nine" to 9,
         )
 
-fun solveDay1Part2Puzzle(file: File): Int {
+fun solvePart2(file: File): Int {
     return file
         .readLines()
         .map { "${findFirstDigit(it)}${findLastDigit(it)}" }

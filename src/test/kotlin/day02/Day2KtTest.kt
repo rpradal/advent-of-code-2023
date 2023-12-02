@@ -27,26 +27,26 @@ internal class Day2KtTest {
 
     @ParameterizedTest
     @MethodSource("generatePart1TestCases")
-    fun solveDay1Part1Puzzle(
+    fun solvePart1Puzzle(
         path: String,
         expectedResult: Int,
     ) {
         val testFile = File(path)
 
-        val result = solveDay2Part1Puzzle(testFile)
+        val result = solvePart1(testFile)
 
         assertEquals(expectedResult, result)
     }
 
     @ParameterizedTest
     @MethodSource("generatePart2TestCases")
-    fun solveDay1Part2Puzzle(
+    fun solvePart2Puzzle(
         path: String,
         expectedResult: Int,
     ) {
         val testFile = File(path)
 
-        val result = solveDay2Part2Puzzle(testFile)
+        val result = solvePart2(testFile)
 
         assertEquals(expectedResult, result)
     }
