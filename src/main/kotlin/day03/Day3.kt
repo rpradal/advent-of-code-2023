@@ -2,7 +2,17 @@ package day03
 
 import java.io.File
 
-fun isValidAround(matrix: List<List<Char>>, rowIndex: Int, colIndex: Int): Boolean {
+data class SymbolWithPosition(
+    val symbol: Char,
+    val rowIndex: Int,
+    val colIndex: Int,
+)
+
+fun isValidAround(
+    matrix: List<List<Char>>,
+    rowIndex: Int,
+    colIndex: Int,
+): List<SymbolWithPosition> {
     val rowSize = matrix.size
     val colSize = matrix[rowIndex].size
 
@@ -11,32 +21,33 @@ fun isValidAround(matrix: List<List<Char>>, rowIndex: Int, colIndex: Int): Boole
     val colStart = maxOf(0, colIndex - 1)
     val colEnd = minOf(colSize - 1, colIndex + 1)
 
+    val symbolsAround = mutableListOf<SymbolWithPosition>()
     for (rowIndex2 in rowStart..rowEnd) {
         val row = matrix[rowIndex2]
         for (colIndex2 in colStart..colEnd) {
             val col = row[colIndex2]
             if (!col.isDigit() && col != '.') {
-                return true
+                symbolsAround.add(SymbolWithPosition(col, rowIndex2, colIndex2))
             }
         }
     }
 
-    return false
+    return symbolsAround
 }
 
-fun solvePart1(file: File): Int {
+fun parseProblem(file: File): List<Pair<Int, Set<SymbolWithPosition>>> {
     val gameMatrix = file.readLines().map(String::toList)
     val partNumbers = mutableListOf<Int>()
-    val partValid = mutableListOf<Boolean>()
+    val partValid = mutableListOf<Set<SymbolWithPosition>>()
 
     var partBeingCollected = ""
-    var partBeingCollectedValid = false
+    var partBeingCollectedAround = mutableSetOf<SymbolWithPosition>()
 
     fun finalizeEndOfNumber() {
         partNumbers += partBeingCollected.toInt()
-        partValid += partBeingCollectedValid
+        partValid += partBeingCollectedAround
         partBeingCollected = ""
-        partBeingCollectedValid = false
+        partBeingCollectedAround = mutableSetOf()
     }
 
     for (rowIndex in gameMatrix.indices) {
@@ -45,9 +56,7 @@ fun solvePart1(file: File): Int {
             val col = row[colIndex]
             if (col.isDigit()) {
                 partBeingCollected += col
-                if (!partBeingCollectedValid) {
-                    partBeingCollectedValid = isValidAround(gameMatrix, rowIndex, colIndex)
-                }
+                partBeingCollectedAround.addAll(isValidAround(gameMatrix, rowIndex, colIndex))
             } else if (partBeingCollected.isNotEmpty()) {
                 finalizeEndOfNumber()
             }
@@ -57,10 +66,25 @@ fun solvePart1(file: File): Int {
         }
     }
 
+    return partNumbers.zip(partValid)
+}
 
-    return partNumbers.zip(partValid).filter { it.second }.sumOf { it.first }
+fun solvePart1(file: File): Int {
+    return parseProblem(file).filter { it.second.isNotEmpty() }.sumOf { it.first }
 }
 
 fun solvePart2(file: File): Int {
-    return 0
+    return parseProblem(file)
+        .map { it.first to it.second.filter { symbolWithPosition -> symbolWithPosition.symbol == '*' } }
+        .flatMap {
+            it.second.map { symbolWithPosition ->
+                (
+                    symbolWithPosition.rowIndex to symbolWithPosition.colIndex
+                ) to it.first
+            }
+        }
+        .groupBy { it.first }
+        .filterValues { it.size == 2 }
+        .map { it.value.map(Pair<*, Int>::second).reduce(Int::times) }
+        .sum()
 }
