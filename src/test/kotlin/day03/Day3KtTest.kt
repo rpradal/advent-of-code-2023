@@ -12,7 +12,7 @@ internal class Day3KtTest {
         fun generatePart1TestCases(): List<Arguments> {
             return listOf(
                 Arguments.of("src/test/kotlin/day03/sample", 4361),
-                Arguments.of("src/test/kotlin/day03/puzzle", null),
+                Arguments.of("src/test/kotlin/day03/puzzle", 522726),
             )
         }
 
