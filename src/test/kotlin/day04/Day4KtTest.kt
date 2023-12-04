@@ -11,8 +11,8 @@ internal class Day4KtTest {
         @JvmStatic
         fun generatePart1TestCases(): List<Arguments> {
             return listOf(
-                Arguments.of("src/test/kotlin/day04/sample", 0),
-                Arguments.of("src/test/kotlin/day04/puzzle", 0),
+                Arguments.of("src/test/kotlin/day04/sample", 13),
+                Arguments.of("src/test/kotlin/day04/puzzle", 18653),
             )
         }
 
